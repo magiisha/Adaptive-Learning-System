@@ -2,10 +2,10 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import time
 
-if st.button("🚀 Analyze Performance"):
-    with st.spinner("Analyzing your performance..."):
-        time.sleep(1.5)
+# ✅ MUST BE FIRST (only once)
+st.set_page_config(page_title="Adaptive Learning System", layout="wide")
 
+# 🎨 UI Styling
 st.markdown("""
 <style>
 .main {
@@ -26,22 +26,7 @@ h1 {
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("### 📊 Score Comparison")
-
-st.bar_chart(scores)
-
-highest = subjects[scores.index(max(scores))]
-lowest = subjects[scores.index(min(scores))]
-
-st.markdown("### 🔍 Insights")
-st.write(f"🏆 Strongest Subject: {highest}")
-st.write(f"⚠️ Needs Attention: {lowest}")
-
-st.set_page_config(layout="wide")
-
-# Page config
-st.set_page_config(page_title="Adaptive Learning System", layout="centered")
-
+# Title
 st.title("📘 Adaptive Learning System using AI-driven Analytics")
 
 st.markdown("### 📥 Enter Subjects and Scores")
@@ -52,7 +37,7 @@ num_subjects = st.number_input("Enter number of subjects", min_value=1, max_valu
 subjects = []
 scores = []
 
-# Dynamic input
+# Dynamic inputs
 for i in range(num_subjects):
     col1, col2 = st.columns(2)
     
@@ -73,48 +58,89 @@ if st.button("🚀 Analyze Performance"):
         st.warning("Please enter at least one subject")
     
     else:
-        total_score = sum(scores)
-        max_score = len(scores) * 100
-        percentage = total_score / max_score * 100
-        
-        # Performance classification
-        if percentage >= 75:
-            performance = "Good"
-            color = "green"
-        elif percentage >= 50:
-            performance = "Average"
-            color = "orange"
-        else:
-            performance = "Poor"
-            color = "red"
+        with st.spinner("🔍 AI analyzing your performance..."):
+            time.sleep(1.5)
 
-        # Results
+            total_score = sum(scores)
+            max_score = len(scores) * 100
+            percentage = total_score / max_score * 100
+            
+            # Performance classification
+            if percentage >= 75:
+                performance = "Good"
+                color = "green"
+            elif percentage >= 50:
+                performance = "Average"
+                color = "orange"
+            else:
+                performance = "Poor"
+                color = "red"
+
+        # 🎯 RESULT CARD
         st.markdown("## 📊 Results")
-        st.markdown(f"<h3 style='color:{color};'>Performance: {performance}</h3>", unsafe_allow_html=True)
+        st.markdown(f"""
+        <div style="
+            background: linear-gradient(135deg, #1f4037, #99f2c8);
+            padding:20px;
+            border-radius:15px;
+            text-align:center;
+            box-shadow:0px 0px 15px rgba(0,0,0,0.3);
+        ">
+            <h2 style="color:black;">Performance: {performance}</h2>
+            <h3>Score: {total_score}/{max_score}</h3>
+            <h3>Percentage: {round(percentage,2)}%</h3>
+        </div>
+        """, unsafe_allow_html=True)
 
-        st.metric("📈 Overall Score", f"{total_score} / {max_score}")
-        st.metric("📊 Percentage", f"{round(percentage,2)}%")
+        # 📊 ANALYTICS SECTION
+        st.markdown("## 📊 Performance Analytics")
 
-        # Pie Chart
-        st.markdown("### 📊 Subject-wise Distribution")
-        fig, ax = plt.subplots()
-        ax.pie(scores, labels=subjects, autopct='%1.1f%%')
-        st.pyplot(fig)
+        col1, col2 = st.columns(2)
 
-        # Smart Recommendations (NOT basic 🔥)
-        st.markdown("### 🧠 Study Plan")
+        with col1:
+            st.markdown("### 🥧 Subject Distribution")
+            fig, ax = plt.subplots()
+            ax.pie(scores, labels=subjects, autopct='%1.1f%%')
+            st.pyplot(fig)
+
+        with col2:
+            st.markdown("### 📊 Score Comparison")
+            st.bar_chart(scores)
+
+        # 🔍 INSIGHTS
+        highest = subjects[scores.index(max(scores))]
+        lowest = subjects[scores.index(min(scores))]
+
+        st.markdown("### 🔍 Insights")
+        st.write(f"🏆 Strongest Subject: {highest}")
+        st.write(f"⚠️ Needs Attention: {lowest}")
+
+        # 📊 PROGRESS BAR
+        st.markdown("### 📊 Performance Level")
+        st.progress(int(percentage))
+
+        # 🧠 SMART STUDY PLAN
+        st.markdown("### 🧠 Personalized Study Plan")
 
         weak_subjects = [subjects[i] for i in range(len(scores)) if scores[i] < 60]
 
         if weak_subjects:
             for sub in weak_subjects:
-                st.write(f"📌 For **{sub}**:")
-                st.write("- Focus on completing pending syllabus topics")
-                st.write("- Practice previous year questions")
-                st.write("- Allocate 1 hour daily for revision")
+                st.write(f"📘 **{sub} Study Plan:**")
+                st.write("- Complete pending syllabus topics")
+                st.write("- Practice 10–15 problems daily")
+                st.write("- Revise concepts every 2 days")
                 st.write("- Take weekly mock tests")
         else:
-            st.success("🎉 You are performing well across all subjects. Focus on advanced practice!")
+            st.success("🎉 Excellent performance! Focus on advanced learning.")
+
+        # 📅 WEEKLY PLAN
+        st.markdown("### 📅 Weekly Study Schedule")
+        days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+        for i, day in enumerate(days):
+            subject = subjects[i % len(subjects)]
+            st.write(f"{day}: Study {subject} for 1–2 hours")
 
 st.markdown("---")
 st.markdown("<center>Made with ❤️ using AI-driven Analytics</center>", unsafe_allow_html=True)
