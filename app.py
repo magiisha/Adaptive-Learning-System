@@ -27,7 +27,7 @@ h1 {
 """, unsafe_allow_html=True)
 
 # Title
-st.title("📘 Adaptive Learning System using AI-driven Analytics")
+st.title("📘 Adaptive Learning System")
 
 st.markdown("### 📥 Enter Subjects and Scores")
 
