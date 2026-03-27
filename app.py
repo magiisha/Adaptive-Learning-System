@@ -1,6 +1,26 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
+st.markdown("""
+<style>
+.main {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+h1 {
+    text-align: center;
+    color: #00ffd5;
+}
+.stButton>button {
+    background-color: #00ffd5;
+    color: black;
+    border-radius: 12px;
+    font-size: 18px;
+    height: 3em;
+    width: 100%;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Page config
 st.set_page_config(page_title="Adaptive Learning System", layout="centered")
 
