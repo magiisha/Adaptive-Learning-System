@@ -1,5 +1,10 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+import time
+
+if st.button("🚀 Analyze Performance"):
+    with st.spinner("Analyzing your performance..."):
+        time.sleep(1.5)
 
 st.markdown("""
 <style>
@@ -20,6 +25,19 @@ h1 {
 }
 </style>
 """, unsafe_allow_html=True)
+
+st.markdown("### 📊 Score Comparison")
+
+st.bar_chart(scores)
+
+highest = subjects[scores.index(max(scores))]
+lowest = subjects[scores.index(min(scores))]
+
+st.markdown("### 🔍 Insights")
+st.write(f"🏆 Strongest Subject: {highest}")
+st.write(f"⚠️ Needs Attention: {lowest}")
+
+st.set_page_config(layout="wide")
 
 # Page config
 st.set_page_config(page_title="Adaptive Learning System", layout="centered")
